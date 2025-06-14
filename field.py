@@ -1,5 +1,5 @@
 # field.py
-
+import os
 class Field:
     def __init__(self):
         self.total_length_yards = 120  
@@ -39,4 +39,39 @@ class Field:
             f"Ball position: {self.ball_position}"
         )
     
-    
+    def draw(self, players):
+        import os
+        os.system('cls' if os.name == 'nt' else 'clear')  # Clear terminal
+
+        display_length = 50
+        display_width = 50
+
+        scale_x = self.total_length_yards / display_length
+        scale_y = self.width_yards / display_width
+
+        for y in range(display_width):
+            row = ""
+            for x in range(display_length):
+                field_x = x * scale_x
+                field_y = y * scale_y
+
+                player_here = next(
+                    (p for p in players if int(p.x // scale_x) == x and int(p.y // scale_y) == y),
+                    None
+                )
+
+                if player_here:
+                    # Use first letter of position as symbol (e.g., 'W' for WR)
+                    row += player_here.position[0]
+                elif x == 0 or x == display_length - 1:
+                    row += "="
+                elif x % 10 == 0:
+                    row += "|"
+                else:
+                    row += "."
+            print(row)
+
+
+
+
+
